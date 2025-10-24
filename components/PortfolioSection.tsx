@@ -59,7 +59,7 @@ const PortfolioSection = forwardRef<HTMLElement, SectionProps>(({ id, title, inf
                     ))}
                 </div>
             ) : (
-                <p className="max-w-xl mx-auto mt-4 text-base italic text-gray-300 md:text-lg">{info}</p>
+                <p className="max-w-xl mx-auto mt-4 text-base italic text-gray-300 md:text-lg">My work will be displayed here. Go to the admin panel to add your first project!</p>
             )}
         </div>
       </div>

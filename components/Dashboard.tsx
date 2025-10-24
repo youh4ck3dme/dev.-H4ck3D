@@ -49,10 +49,22 @@ const Dashboard: React.FC<DashboardProps> = ({ projects, onAddProject, onDeleteP
         <section className="p-6 mb-8 bg-gray-800 border border-gray-700 rounded-lg">
           <h2 className="text-2xl font-bold mb-4">Add New Project</h2>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <input name="title" value={newProject.title} onChange={handleChange} placeholder="Project Title" className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
-            <input name="projectUrl" value={newProject.projectUrl} onChange={handleChange} placeholder="Project URL" className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
-            <textarea name="description" value={newProject.description} onChange={handleChange} placeholder="Description" className="w-full p-2 bg-gray-700 rounded border border-gray-600 md:col-span-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" rows={3} required ></textarea>
-            <input name="imageUrl" value={newProject.imageUrl} onChange={handleChange} placeholder="Image URL" className="w-full p-2 bg-gray-700 rounded border border-gray-600 md:col-span-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+            <div>
+              <label htmlFor="title" className="sr-only">Project Title</label>
+              <input id="title" name="title" value={newProject.title} onChange={handleChange} placeholder="Project Title" className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+            </div>
+            <div>
+              <label htmlFor="projectUrl" className="sr-only">Project URL</label>
+              <input id="projectUrl" name="projectUrl" value={newProject.projectUrl} onChange={handleChange} placeholder="Project URL" className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+            </div>
+            <div className="md:col-span-2">
+              <label htmlFor="description" className="sr-only">Description</label>
+              <textarea id="description" name="description" value={newProject.description} onChange={handleChange} placeholder="Description" className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" rows={3} required ></textarea>
+            </div>
+            <div className="md:col-span-2">
+               <label htmlFor="imageUrl" className="sr-only">Image URL</label>
+              <input id="imageUrl" name="imageUrl" value={newProject.imageUrl} onChange={handleChange} placeholder="Image URL" className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+            </div>
             <button type="submit" disabled={isSubmitting} className="w-full p-2 font-semibold text-black bg-white rounded md:col-span-2 hover:bg-gray-200 disabled:bg-gray-400 transition-colors">
               {isSubmitting ? 'Adding...' : 'Add Project'}
             </button>
@@ -64,7 +76,7 @@ const Dashboard: React.FC<DashboardProps> = ({ projects, onAddProject, onDeleteP
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {projects.length > 0 ? projects.map(project => (
               <div key={project.id} className="relative flex flex-col bg-gray-800 border border-gray-700 rounded-lg overflow-hidden group">
-                <img src={project.imageUrl} alt={project.title} className="w-full h-40 object-cover" />
+                <img src={project.imageUrl} alt={project.title} className="w-full h-40 object-cover" loading="lazy" decoding="async" />
                 <div className="p-4 flex-grow flex flex-col">
                   <h3 className="text-lg font-bold">{project.title}</h3>
                   <p className="mt-2 text-sm text-gray-400 flex-grow">{project.description}</p>

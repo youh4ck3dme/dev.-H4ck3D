@@ -12,6 +12,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         src={project.imageUrl} 
         alt={`Screenshot of ${project.title}`} 
         className="w-full h-48 object-cover"
+        loading="lazy"
+        decoding="async"
       />
       <div className="p-6 flex flex-col flex-grow">
         <h3 className="text-xl font-bold text-white">{project.title}</h3>
