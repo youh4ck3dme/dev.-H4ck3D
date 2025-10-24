@@ -5,9 +5,12 @@ import { Project } from '../types';
 interface AdminProps {
   projects: Project[];
   onAddProject: (project: Omit<Project, 'id'>) => void;
+  onEditProject: (id: string, updatedData: Omit<Project, 'id'>) => void;
   onDeleteProject: (id: string) => void;
+  onPinProject: (id: string) => void;
   showToast: (message: string, type: 'success' | 'error') => void;
   navigate: (path: string) => void;
+  allTags: string[];
 }
 
 const ADMIN_PASSWORD = "23513900";
