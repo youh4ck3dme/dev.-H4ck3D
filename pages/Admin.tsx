@@ -6,6 +6,8 @@ interface AdminProps {
   projects: Project[];
   onAddProject: (project: Omit<Project, 'id'>) => void;
   onDeleteProject: (id: string) => void;
+  showToast: (message: string, type: 'success' | 'error') => void;
+  navigate: (path: string) => void;
 }
 
 const ADMIN_PASSWORD = "23513900";
@@ -33,6 +35,13 @@ const Admin: React.FC<AdminProps> = (props) => {
       setError('Incorrect password. Please try again.');
     }
     setPassword('');
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('isAdminAuthenticated');
+    setIsAuthenticated(false);
+    // Redirect to home page using client-side navigation
+    props.navigate('/');
   };
   
   if (!isAuthenticated) {
@@ -66,7 +75,7 @@ const Admin: React.FC<AdminProps> = (props) => {
     );
   }
 
-  return <Dashboard {...props} />;
+  return <Dashboard {...props} onLogout={handleLogout} />;
 };
 
 export default Admin;

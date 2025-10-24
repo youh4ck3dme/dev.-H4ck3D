@@ -5,9 +5,11 @@ interface DashboardProps {
   projects: Project[];
   onAddProject: (project: Omit<Project, 'id'>) => void;
   onDeleteProject: (id: string) => void;
+  onLogout: () => void;
+  showToast: (message: string, type: 'success' | 'error') => void;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ projects, onAddProject, onDeleteProject }) => {
+const Dashboard: React.FC<DashboardProps> = ({ projects, onAddProject, onDeleteProject, onLogout, showToast }) => {
   const [newProject, setNewProject] = useState({ title: '', description: '', imageUrl: '', projectUrl: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -19,7 +21,7 @@ const Dashboard: React.FC<DashboardProps> = ({ projects, onAddProject, onDeleteP
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if(!newProject.title || !newProject.description || !newProject.imageUrl || !newProject.projectUrl) {
-      alert("Please fill in all fields.");
+      showToast("Please fill in all fields.", 'error');
       return;
     }
     setIsSubmitting(true);
@@ -31,9 +33,17 @@ const Dashboard: React.FC<DashboardProps> = ({ projects, onAddProject, onDeleteP
   return (
     <div className="min-h-screen bg-gray-900 text-white p-4 sm:p-6 lg:p-8">
       <div className="max-w-6xl mx-auto">
-        <header className="mb-8">
-          <h1 className="text-4xl font-extrabold tracking-tight">Admin Dashboard</h1>
-          <p className="mt-1 text-gray-400">Manage your portfolio projects here.</p>
+        <header className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-4xl font-extrabold tracking-tight">Admin Dashboard</h1>
+            <p className="mt-1 text-gray-400">Manage your portfolio projects here.</p>
+          </div>
+          <button 
+            onClick={onLogout}
+            className="px-5 py-2 font-semibold text-white transition-colors bg-red-600 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-red-500"
+          >
+            Logout
+          </button>
         </header>
 
         <section className="p-6 mb-8 bg-gray-800 border border-gray-700 rounded-lg">

@@ -9,6 +9,7 @@ interface SectionInfo {
 interface HeaderProps {
   sections: SectionInfo[];
   activeSection: string;
+  onNavigate: (path: string) => void;
 }
 
 // Extracted and memoized for performance. Prevents re-rendering on every scroll.
@@ -17,7 +18,8 @@ const NavLinks: React.FC<{
   activeSection: string;
   isMobile?: boolean;
   onLinkClick: () => void;
-}> = memo(({ sections, activeSection, isMobile = false, onLinkClick }) => (
+  onNavigate: (path: string) => void;
+}> = memo(({ sections, activeSection, isMobile = false, onLinkClick, onNavigate }) => (
     <>
       {sections.map((section) => (
         <li key={section.id}>
@@ -36,8 +38,7 @@ const NavLinks: React.FC<{
       ))}
       {isMobile && (
         <li className="flex flex-col w-full gap-3 pt-4 mt-4 border-t border-gray-700">
-          <a href="#" className="w-full px-5 py-2 text-sm font-medium text-center text-gray-200 transition-colors border border-gray-600 rounded-full hover:bg-gray-700">Login</a>
-          <a href="#" className="w-full px-5 py-2 text-sm font-medium text-center text-black bg-white rounded-full hover:bg-gray-200">Sign Up</a>
+          <button onClick={() => { onNavigate('/admin'); onLinkClick(); }} className="w-full px-5 py-2 text-sm font-medium text-center text-gray-200 transition-colors border border-gray-600 rounded-full hover:bg-gray-700">Admin Login</button>
         </li>
       )}
     </>
@@ -45,7 +46,7 @@ const NavLinks: React.FC<{
 
 NavLinks.displayName = 'NavLinks';
 
-const Header: React.FC<HeaderProps> = ({ sections, activeSection }) => {
+const Header: React.FC<HeaderProps> = ({ sections, activeSection, onNavigate }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const closeMenu = () => setIsMobileMenuOpen(false);
@@ -54,17 +55,16 @@ const Header: React.FC<HeaderProps> = ({ sections, activeSection }) => {
     <header className="fixed z-50 transform -translate-x-1/2 top-5 left-1/2 w-[calc(100%-2rem)] max-w-4xl">
       <nav className="w-full px-6 py-3 mx-auto bg-black/50 backdrop-blur-lg border border-gray-700 rounded-full shadow-lg">
         <div className="flex items-center justify-between">
-          <a href="#home" className="text-xl font-extrabold text-white">LOGO</a>
+          <a href="#home" className="text-xl font-extrabold text-white">H4CK3D</a>
 
           <div className="hidden md:flex items-center gap-8">
             <ul className="flex items-center gap-8 list-none">
-              <NavLinks sections={sections} activeSection={activeSection} onLinkClick={closeMenu} />
+              <NavLinks sections={sections} activeSection={activeSection} onLinkClick={closeMenu} onNavigate={onNavigate} />
             </ul>
           </div>
           
           <div className="hidden md:flex items-center gap-4">
-              <a href="#" className="px-5 py-2 text-sm font-medium text-gray-200 transition-colors border border-gray-600 rounded-full hover:bg-gray-800">Login</a>
-              <a href="#" className="px-5 py-2 text-sm font-medium text-black bg-white rounded-full whitespace-nowrap hover:bg-gray-200">Sign Up</a>
+              <button onClick={() => onNavigate('/admin')} className="px-5 py-2 text-sm font-medium text-gray-200 transition-colors border border-gray-600 rounded-full whitespace-nowrap hover:bg-gray-800">Admin Login</button>
           </div>
 
           <div className="flex items-center md:hidden">
@@ -88,7 +88,7 @@ const Header: React.FC<HeaderProps> = ({ sections, activeSection }) => {
           className={`transition-all duration-300 ease-in-out overflow-hidden md:hidden ${isMobileMenuOpen ? 'max-h-96 mt-4' : 'max-h-0'}`}
         >
           <ul className="flex flex-col items-center gap-6 py-4 list-none">
-            <NavLinks sections={sections} activeSection={activeSection} onLinkClick={closeMenu} isMobile={true} />
+            <NavLinks sections={sections} activeSection={activeSection} onLinkClick={closeMenu} isMobile={true} onNavigate={onNavigate} />
           </ul>
         </div>
       </nav>

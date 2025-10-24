@@ -32,7 +32,7 @@ const Footer: React.FC = () => {
           </div>
         </div>
         <div className="pt-8 mt-8 text-sm text-center text-gray-400 border-t border-gray-700">
-          <p>&copy; 2025 Company Name. All rights reserved.</p>
+          <p>&copy; 2025 dev. H4CK3D. All rights reserved.</p>
         </div>
       </div>
     </footer>

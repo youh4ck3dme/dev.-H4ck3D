@@ -6,6 +6,7 @@ import LoadingSpinner from './components/LoadingSpinner';
 import Admin from './pages/Admin';
 import PortfolioSection from './components/PortfolioSection';
 import { Project } from './types';
+import Toast from './components/Toast';
 
 // A simple throttle function to limit how often the scroll handler runs for performance.
 const throttle = (func: (...args: any[]) => void, delay: number) => {
@@ -35,7 +36,13 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [projects, setProjects] = useState<Project[]>([]);
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const sectionRefs = useRef<Record<string, HTMLElement>>({});
+
+  const navigate = (path: string) => {
+    window.history.pushState({}, '', path);
+    setCurrentPath(path);
+  };
 
   useEffect(() => {
     // Load projects from localStorage on initial render
@@ -64,6 +71,10 @@ const App: React.FC = () => {
     };
   }, []);
 
+  const showToast = (message: string, type: 'success' | 'error') => {
+    setToast({ message, type });
+  };
+
   const handleAddProject = (project: Omit<Project, 'id'>) => {
     setProjects(prevProjects => {
       const newProject = { ...project, id: Date.now().toString() };
@@ -71,6 +82,7 @@ const App: React.FC = () => {
       localStorage.setItem('portfolioProjects', JSON.stringify(updatedProjects));
       return updatedProjects;
     });
+    showToast('Project added successfully!', 'success');
   };
 
   const handleDeleteProject = (id: string) => {
@@ -79,6 +91,7 @@ const App: React.FC = () => {
       localStorage.setItem('portfolioProjects', JSON.stringify(updatedProjects));
       return updatedProjects;
     });
+    showToast('Project deleted successfully!', 'success');
   };
 
   const handleScroll = useCallback(() => {
@@ -119,13 +132,16 @@ const App: React.FC = () => {
     return <Admin 
               projects={projects} 
               onAddProject={handleAddProject} 
-              onDeleteProject={handleDeleteProject} 
+              onDeleteProject={handleDeleteProject}
+              showToast={showToast}
+              navigate={navigate}
             />;
   }
   
   return (
-    <div className="bg-[#0a0a0a] text-white font-sans animate-fadeIn">
-      <Header sections={staticSections} activeSection={activeSection} />
+    <div className="bg-[#0a0a0a] text-white font-sans">
+      {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+      <Header sections={staticSections} activeSection={activeSection} onNavigate={navigate} />
       <main>
         {staticSections.map((section) => {
           if (section.id === 'portfolio') {
