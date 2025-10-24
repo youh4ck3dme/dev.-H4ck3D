@@ -50,8 +50,8 @@ const Section = forwardRef<HTMLElement, SectionProps>(({ id, title, info, gradie
           ref.current = el;
         }
       }}
-      className={`min-h-screen w-full flex items-center justify-center p-4 bg-gradient-to-br ${gradient} transition-all duration-1000 ease-out transform ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+      className={`min-h-screen w-full flex items-center justify-center p-4 bg-gradient-to-br ${gradient} transition-opacity duration-1000 ease-out ${
+        isVisible ? 'opacity-100' : 'opacity-0'
       }`}
     >
       <div className="text-center">
