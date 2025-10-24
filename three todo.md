@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<files>
-<file path="three todo.md"><![CDATA[# 🚀 ULTIMATE UNIVERSAL PWA & DEVOPS CHECKLIST (TODO.MD)
+# 🚀 ULTIMATE UNIVERSAL PWA & DEVOPS CHECKLIST (TODO.MD)
 
 ---
 
@@ -263,7 +261,3 @@ Tento dokument je jediný referenčný checklist pre každého developera pri ka
 - [ ] Žiadny nevyužitý asset, žiadne dev/test artefakty v produkcii
 - [ ] Zálohovaný config, deploy log, README aktualizované
 - [ ] Final audit: everything works, nothing missed!
-]]>
-</file>
-</files>
-```
