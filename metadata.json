@@ -1,0 +1,5 @@
+{
+  "name": "dev. H4CK3D",
+  "description": "A visually appealing, responsive landing page built with React and Tailwind CSS. It features a floating navigation bar that actively highlights the current section as the user scrolls, providing a smooth and intuitive user experience.",
+  "requestFramePermissions": []
+}
