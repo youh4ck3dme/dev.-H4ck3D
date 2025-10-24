@@ -1,4 +1,6 @@
-# 🚀 ULTIMATE UNIVERSAL PWA & DEVOPS CHECKLIST (TODO.MD)
+<?xml version="1.0" encoding="UTF-8"?>
+<files>
+<file path="three todo.md"><![CDATA[# 🚀 ULTIMATE UNIVERSAL PWA & DEVOPS CHECKLIST (TODO.MD)
 
 ---
 
@@ -220,14 +222,40 @@ Tento dokument je jediný referenčný checklist pre každého developera pri ka
 
 ## 9. Framework-specific optimalizácie
 
+### React (s Vite)
+- [x] **Optimalizácia `vite.config.js`**
+    - **Popis:** Konfiguračný súbor Vite je kľúčový pre výkon a development experience.
+    - **Úlohy:**
+        - [x] **PWA Plugin:** `vite-plugin-pwa` je správne nakonfigurovaný pre auto-update a generovanie service workera.
+        - [x] **Path Aliases:** Sú nastavené aliasy (napr. `@/*`) pre čisté a refaktorovateľné importy.
+        - [x] **Code Splitting:** Využíva sa `build.rollupOptions.output.manualChunks` na oddelenie vendor knižníc (React, atď.) od aplikačného kódu pre lepšie cachovanie.
+    - **Audit:** Skontroluj `vite.config.js`. V DevTools (Network) over, že sa vendor knižnice načítavajú v samostatnom chunku (napr. `vendor.js`).
+
+- [x] **Optimalizácia React komponentov**
+    - **Popis:** Zabezpečenie, že komponenty sú výkonné a zbytočne nespôsobujú re-render.
+    - **Úlohy:**
+        - [x] **Lazy Loading:** Komponenty, ktoré nie sú okamžite viditeľné (napr. na iných routách alebo v modáloch), sú načítavané pomocou `React.lazy()` a `<Suspense>`.
+        - [x] **Memoization:** Komponenty, ktoré sa často re-renderujú s rovnakými props, sú obalené v `React.memo()`. Zložité výpočty sú optimalizované pomocou `useMemo`.
+        - [x] **Keys v zoznamoch:** Všetky zoznamy renderované cez `.map()` používajú stabilné a unikátne `key` props.
+    - **Audit:** Použi React DevTools Profiler na identifikáciu pomalých a zbytočne re-renderovaných komponentov.
+
+- [x] **Error Handling**
+    - **Popis:** Aplikácia by nemala spadnúť kvôli chybe v renderovaní jedného komponentu.
+    - **Úlohy:**
+        - [x] **Error Boundaries:** Aspoň jedna globálna Error Boundary je implementovaná na najvyššej úrovni aplikácie, aby zachytila runtime chyby a zobrazila fallback UI.
+    - **Audit:** Simuluj chybu v jednom komponente a over, že sa zobrazí Error Boundary a nie biela obrazovka.
+
 ### Next.js
-- [ ] `next.config.js` správne domains, images, swc config, rewrites
+- [ ] next.config.js správne domains, images, swc config, rewrites
+
 ### Angular
-- [ ] `angular.json`: nastavený projekt output, assets, styles, serviceWorker
-### Vite/Astro
-- [x] `vite.config.js`: plugins, assets, public dir, PWA plugin config
+- [ ] angular.json: nastavený projekt output, assets, styles, serviceWorker
+
+### Astro
+- [ ] astro.config.mjs: nastavené integrácie (React, PWA), site, a build options.
+
 ### Vue/Svelte/Nuxt
-- [ ] `nuxt.config`, `vue.config` správne meta/pluginy/dependencies
+- [ ] nuxt.config, vue.config správne meta/pluginy/dependencies
 
 ---
 
@@ -235,3 +263,7 @@ Tento dokument je jediný referenčný checklist pre každého developera pri ka
 - [ ] Žiadny nevyužitý asset, žiadne dev/test artefakty v produkcii
 - [ ] Zálohovaný config, deploy log, README aktualizované
 - [ ] Final audit: everything works, nothing missed!
+]]>
+</file>
+</files>
+```

@@ -1,265 +1,182 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import Header from './components/Header';
-import Section from './components/Section';
-import HomeSection from './components/HomeSection';
-import Footer from './components/Footer';
-import LoadingSpinner from './components/LoadingSpinner';
-import Admin from './pages/Admin';
-import PortfolioSection from './components/PortfolioSection';
+import React, { useState, useEffect, useRef } from 'react';
 import { Project } from './types';
-import Toast from './components/Toast';
+import Header from './components/Header';
+import HomeSection from './components/HomeSection';
+import PortfolioSection from './components/PortfolioSection';
 import PromptsSection from './components/PromptsSection';
-
-// A simple throttle function to limit how often the scroll handler runs for performance.
-const throttle = (func: (...args: any[]) => void, delay: number) => {
-  let inProgress = false;
-  return (...args: any[]) => {
-    if (inProgress) {
-      return;
-    }
-    inProgress = true;
-    setTimeout(() => {
-      func(...args);
-      inProgress = false;
-    }, delay);
-  };
-};
-
-const COMMON_TAGS = [
-  'React', 'Angular', 'Vue', 'Svelte', 'JavaScript', 'TypeScript', 
-  'Node.js', 'Python', 'Go', 'Java', 'Firebase', 'Supabase', 'MongoDB', 
-  'PostgreSQL', 'GraphQL', 'REST API', 'Docker', 'Kubernetes', 'AWS', 
-  'Google Cloud', 'Azure', 'Tailwind CSS', 'Next.js', 'Vite', 'Gemini API'
-];
-
-const staticSections = [
-  { id: 'home', title: 'yu.h4ck3d.me', info: 'Execute a prompt. Query the AI mainframe.', gradient: 'from-gray-900 to-gray-800' },
-  { id: 'prompts', title: 'PROMPTS', info: 'A collection of powerful, production-ready AI prompts.', gradient: 'from-gray-800 to-gray-900' },
-  { id: 'services', title: 'SERVICES', info: 'Service offerings, features, pricing plans, and detailed descriptions', gradient: 'from-gray-900 to-[#1f1f22]' },
-  { id: 'portfolio', title: 'PORTFOLIO', info: 'Project showcase, case studies, client work, and achievements gallery', gradient: 'from-[#1f1f22] to-gray-800' },
-  { id: 'contact', title: 'CONTACT', info: 'Contact form, office locations, phone numbers, and social media links', gradient: 'from-gray-800 to-gray-900' }
-];
+import Footer from './components/Footer';
+import Admin from './pages/Admin';
+import Toast from './components/Toast';
+import LoadingSpinner from './components/LoadingSpinner';
+import ParticleBackground from './components/ParticleBackground';
+import InstallPwaBanner from './components/InstallPwaBanner';
 
 const App: React.FC = () => {
-  const [activeSection, setActiveSection] = useState<string>('home');
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [currentPath, setCurrentPath] = useState(window.location.pathname);
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
-  const sectionRefs = useRef<Record<string, HTMLElement>>({});
+    // State Management
+    const [projects, setProjects] = useState<Project[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [currentPath, setCurrentPath] = useState(window.location.pathname);
+    const [activeSection, setActiveSection] = useState('home');
+    const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
-  const allTags = useMemo(() => {
-    const projectTags = projects.flatMap(p => p.tags);
-    const combinedTags = [...COMMON_TAGS, ...projectTags];
-    // Return unique tags, case-insensitively, but keep original casing of the first occurrence
-    const uniqueTags = Array.from(new Map(combinedTags.map(tag => [tag.toLowerCase(), tag])).values());
-    return uniqueTags.sort();
-  }, [projects]);
-
-  const navigate = (path: string) => {
-    window.history.pushState({}, '', path);
-    setCurrentPath(path);
-  };
-
-  useEffect(() => {
     // Load projects from localStorage on initial render
-    try {
-      const storedProjects = localStorage.getItem('portfolioProjects');
-      if (storedProjects) {
-        setProjects(JSON.parse(storedProjects));
-      }
-    } catch (error) {
-      console.error("Failed to read or parse projects from localStorage", error);
-    }
-
-    // Simulate initial loading to show the spinner and prevent content flash
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-
-    const handlePopState = () => {
-      setCurrentPath(window.location.pathname);
-    };
-    window.addEventListener('popstate', handlePopState);
-
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener('popstate', handlePopState);
-    };
-  }, []);
-
-  const showToast = (message: string, type: 'success' | 'error') => {
-    setToast({ message, type });
-  };
-
-  const handleAddProject = (project: Omit<Project, 'id'>) => {
-    const newProject = { ...project, id: Date.now().toString() };
-    const updatedProjects = [...projects, newProject];
-    try {
-      localStorage.setItem('portfolioProjects', JSON.stringify(updatedProjects));
-      setProjects(updatedProjects);
-      showToast('Project added successfully!', 'success');
-    } catch (error)
- {
-      console.error("Failed to save projects to localStorage", error);
-      showToast('Failed to save project. Your browser storage might be full or disabled.', 'error');
-    }
-  };
-  
-  const handleEditProject = (id: string, updatedData: Omit<Project, 'id'>) => {
-    const updatedProjects = projects.map(p => (p.id === id ? { ...p, ...updatedData } : p));
-    try {
-      localStorage.setItem('portfolioProjects', JSON.stringify(updatedProjects));
-      setProjects(updatedProjects);
-      showToast('Project updated successfully!', 'success');
-    } catch (error) {
-      console.error("Failed to update project in localStorage", error);
-      showToast('Failed to update project.', 'error');
-    }
-  };
-
-  const handleDeleteProject = (id: string) => {
-    const updatedProjects = projects.filter(p => p.id !== id);
-    try {
-      localStorage.setItem('portfolioProjects', JSON.stringify(updatedProjects));
-      setProjects(updatedProjects);
-      showToast('Project deleted successfully!', 'success');
-    } catch (error) {
-      console.error("Failed to update projects in localStorage", error);
-      showToast('Failed to delete project. Your browser storage might be full or disabled.', 'error');
-    }
-  };
-  
-  const handlePinProject = (id: string) => {
-    const projectToPin = projects.find(p => p.id === id);
-    if (!projectToPin) return;
-
-    const remainingProjects = projects.filter(p => p.id !== id);
-    const updatedProjects = [projectToPin, ...remainingProjects];
-    
-    try {
-        localStorage.setItem('portfolioProjects', JSON.stringify(updatedProjects));
-        setProjects(updatedProjects);
-        showToast('Project pinned to top!', 'success');
-    } catch (error) {
-        console.error("Failed to update projects in localStorage", error);
-        showToast('Failed to pin project.', 'error');
-    }
-  };
-
-  const handleScroll = useCallback(() => {
-    const scrollPosition = window.scrollY;
-    let currentSection = '';
-
-    staticSections.forEach(section => {
-      const el = sectionRefs.current[section.id];
-      if (el) {
-        const sectionTop = el.offsetTop - 200;
-        if (scrollPosition >= sectionTop) {
-          currentSection = section.id;
+    useEffect(() => {
+        try {
+            const storedProjects = localStorage.getItem('portfolio-projects');
+            if (storedProjects) {
+                setProjects(JSON.parse(storedProjects));
+            } else {
+                // Initialize with empty array if nothing is stored
+                setProjects([]);
+            }
+        } catch (error) {
+            console.error("Failed to load projects from localStorage", error);
+            setProjects([]); // Fallback to empty array on error
+        } finally {
+            setIsLoading(false);
         }
-      }
-    });
+    }, []);
+
+    // Persist projects to localStorage whenever they change
+    useEffect(() => {
+        try {
+            localStorage.setItem('portfolio-projects', JSON.stringify(projects));
+        } catch (error) {
+            console.error("Failed to save projects to localStorage", error);
+        }
+    }, [projects]);
     
-    const newActiveSection = currentSection || 'home';
-    setActiveSection(prev => prev !== newActiveSection ? newActiveSection : prev);
-  }, []);
-
-  useEffect(() => {
-    if (isLoading || currentPath === '/admin') return;
-
-    const throttledScrollHandler = throttle(handleScroll, 100);
-    window.addEventListener('scroll', throttledScrollHandler);
-    handleScroll(); // Initial check
-
-    return () => {
-      window.removeEventListener('scroll', throttledScrollHandler);
+    // Simple client-side routing
+    const navigate = (path: string) => {
+        window.history.pushState({}, '', path);
+        setCurrentPath(path);
     };
-  }, [isLoading, handleScroll, currentPath]);
 
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
+    useEffect(() => {
+        const handlePopState = () => {
+            setCurrentPath(window.location.pathname);
+        };
+        window.addEventListener('popstate', handlePopState);
+        return () => {
+            window.removeEventListener('popstate', handlePopState);
+        };
+    }, []);
 
-  if (currentPath === '/admin') {
-    return <Admin 
-              projects={projects} 
-              onAddProject={handleAddProject} 
-              onEditProject={handleEditProject}
-              onDeleteProject={handleDeleteProject}
-              onPinProject={handlePinProject}
-              showToast={showToast}
-              navigate={navigate}
-              allTags={allTags}
-            />;
-  }
-  
-  return (
-    <div className="bg-[#0a0a0a] text-white font-sans">
-      {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
-      <Header sections={staticSections} activeSection={activeSection} onNavigate={navigate} />
-      <main>
-        {staticSections.map((section) => {
-          if (section.id === 'home') {
-            return (
-               <HomeSection
-                key={section.id}
-                id={section.id}
-                title={section.title}
-                info={section.info}
-                gradient={section.gradient}
-                ref={(el: HTMLElement | null) => {
-                  if (el) sectionRefs.current[section.id] = el;
-                }}
-              />
-            )
-          }
-          if (section.id === 'prompts') {
-            return (
-              <PromptsSection
-                key={section.id}
-                id={section.id}
-                title={section.title}
-                gradient={section.gradient}
-                showToast={showToast}
-                ref={(el: HTMLElement | null) => {
-                  if (el) sectionRefs.current[section.id] = el;
-                }}
-              />
-            );
-          }
-          if (section.id === 'portfolio') {
-            return (
-              <PortfolioSection
-                key={section.id}
-                id={section.id}
-                title={section.title}
-                info={section.info}
-                gradient={section.gradient}
-                projects={projects}
-                ref={(el: HTMLElement | null) => {
-                  if (el) sectionRefs.current[section.id] = el;
-                }}
-              />
-            );
-          }
-          return (
-            <Section
-              key={section.id}
-              id={section.id}
-              title={section.title}
-              info={section.info}
-              gradient={section.gradient}
-              ref={(el: HTMLElement | null) => {
-                if (el) sectionRefs.current[section.id] = el;
-              }}
-            />
-          );
-        })}
-      </main>
-      <Footer />
-    </div>
-  );
+    const showToast = (message: string, type: 'success' | 'error') => {
+        setToast({ message, type });
+    };
+
+    // Project CRUD operations
+    const addProject = (projectData: Omit<Project, 'id'>) => {
+        const newProject: Project = { ...projectData, id: new Date().toISOString() };
+        setProjects(prev => [newProject, ...prev]);
+        showToast('Project added successfully!', 'success');
+    };
+
+    const editProject = (id: string, updatedData: Omit<Project, 'id'>) => {
+        setProjects(prev => prev.map(p => (p.id === id ? { ...updatedData, id } : p)));
+        showToast('Project updated successfully!', 'success');
+    };
+
+    const deleteProject = (id: string) => {
+        setProjects(prev => prev.filter(p => p.id !== id));
+        showToast('Project deleted successfully!', 'success');
+    };
+
+    const pinProject = (id: string) => {
+        const projectToPin = projects.find(p => p.id === id);
+        if (projectToPin) {
+            const otherProjects = projects.filter(p => p.id !== id);
+            setProjects([projectToPin, ...otherProjects]);
+            showToast('Project pinned to top!', 'success');
+        }
+    };
+    
+    const allTags = Array.from(new Set(projects.flatMap(p => p.tags)));
+
+    // Section definitions for header and observer
+    const sections = [
+        { id: 'home', title: 'Home' },
+        { id: 'portfolio', title: 'Portfolio' },
+        { id: 'prompts', title: 'AI Prompts' }
+    ];
+
+    const sectionRefs = useRef<(HTMLElement | null)[]>([]);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        setActiveSection(entry.target.id);
+                    }
+                });
+            },
+            { rootMargin: '-50% 0px -50% 0px' } // Trigger when section is in the middle of the viewport
+        );
+
+        sectionRefs.current.forEach((ref) => {
+            if (ref) observer.observe(ref);
+        });
+
+        return () => {
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            sectionRefs.current.forEach((ref) => {
+                if (ref) observer.unobserve(ref);
+            });
+        };
+    }, [isLoading]); // Rerun when content is loaded
+
+    if (isLoading) {
+        return <LoadingSpinner />;
+    }
+
+    if (currentPath === '/admin') {
+        return <Admin 
+                    projects={projects}
+                    onAddProject={addProject}
+                    onEditProject={editProject}
+                    onDeleteProject={deleteProject}
+                    onPinProject={pinProject}
+                    showToast={showToast}
+                    navigate={navigate}
+                    allTags={allTags}
+                />;
+    }
+
+    return (
+        <div className="bg-[#0a0a0a] text-white">
+            <ParticleBackground />
+            <Header sections={sections} activeSection={activeSection} onNavigate={navigate} />
+            <main className="relative z-10">
+                <HomeSection
+                    ref={(el) => (sectionRefs.current[0] = el)}
+                    id="home"
+                    title="H4CK3D"
+                    info="A portfolio showcasing web development projects with a modern, interactive, hacker-themed UI."
+                    gradient="from-gray-900 to-black"
+                />
+                <PortfolioSection
+                    ref={(el) => (sectionRefs.current[1] = el)}
+                    id="portfolio"
+                    title="Portfolio"
+                    info="My latest work."
+                    gradient="from-black to-gray-900"
+                    projects={projects}
+                />
+                <PromptsSection
+                    ref={(el) => (sectionRefs.current[2] = el)}
+                    id="prompts"
+                    title="AI Prompts"
+                    gradient="from-gray-900 to-black"
+                    showToast={showToast}
+                />
+            </main>
+            <Footer />
+            {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+            <InstallPwaBanner />
+        </div>
+    );
 };
 
 export default App;
