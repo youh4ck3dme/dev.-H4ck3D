@@ -46,7 +46,7 @@ const Header: React.FC<HeaderProps> = ({ sections, activeSection, onNavigate }) 
       {/* Main Header Bar */}
       <header className="fixed top-0 left-0 right-0 z-50">
           <div className="container mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
-              <a href="#home" onClick={(e) => { e.preventDefault(); handleLinkClick('#home'); }} className="text-xl font-bold tracking-tighter text-white transition-opacity hover:opacity-80">
+              <a href="#home" onClick={(e) => { e.preventDefault(); handleLinkClick('/'); }} className="text-xl font-bold tracking-tighter text-white transition-opacity hover:opacity-80">
                   H4CK3D
               </a>
 
@@ -69,6 +69,16 @@ const Header: React.FC<HeaderProps> = ({ sections, activeSection, onNavigate }) 
                           {section.title}
                       </a>
                   ))}
+                  <a
+                    href="/xcloud"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        handleLinkClick('/xcloud');
+                    }}
+                    className="rounded-md px-3 py-2 text-sm font-medium text-gray-400 transition-all duration-150 ease-in-out hover:bg-white/5 hover:text-white"
+                  >
+                    xCloud
+                  </a>
                   <button
                       onClick={() => handleLinkClick('/admin')}
                       className="ml-4 rounded-md bg-white px-4 py-2 text-sm font-semibold text-black transition-transform duration-200 hover:bg-gray-200 active:scale-95"
@@ -126,9 +136,22 @@ const Header: React.FC<HeaderProps> = ({ sections, activeSection, onNavigate }) 
               {section.title}
             </a>
           ))}
+          <a
+              href="/xcloud"
+              onClick={(e) => {
+                  e.preventDefault();
+                  handleLinkClick('/xcloud');
+              }}
+              className={`text-2xl font-semibold text-gray-300 transition-all duration-300 hover:text-white ${
+                isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
+              }`}
+              style={{ transitionDelay: `${150 + sections.length * 50}ms` }}
+            >
+              xCloud
+            </a>
            <div 
              className={`pt-6 transition-all duration-300 ${isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}
-             style={{ transitionDelay: `${150 + sections.length * 50}ms` }}
+             style={{ transitionDelay: `${150 + (sections.length + 1) * 50}ms` }}
             >
              <button
                 onClick={() => handleLinkClick('/admin')}

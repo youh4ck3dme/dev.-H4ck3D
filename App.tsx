@@ -6,6 +6,7 @@ import PortfolioSection from './components/PortfolioSection';
 import PromptsSection from './components/PromptsSection';
 import Footer from './components/Footer';
 import Admin from './pages/Admin';
+import XCloudPage from './pages/XCloudPage';
 import Toast from './components/Toast';
 import LoadingSpinner from './components/LoadingSpinner';
 import ParticleBackground from './components/ParticleBackground';
@@ -98,7 +99,7 @@ const App: React.FC = () => {
     const sections = [
         { id: 'home', title: 'Home' },
         { id: 'portfolio', title: 'Portfolio' },
-        { id: 'prompts', title: 'AI Prompts' }
+        { id: 'prompts', title: 'AI Prompts' },
     ];
 
     const sectionRefs = useRef<(HTMLElement | null)[]>([]);
@@ -142,6 +143,10 @@ const App: React.FC = () => {
                     navigate={navigate}
                     allTags={allTags}
                 />;
+    }
+
+    if (currentPath === '/xcloud') {
+        return <XCloudPage navigate={navigate} />;
     }
 
     return (
