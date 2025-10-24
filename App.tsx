@@ -34,7 +34,8 @@ const App: React.FC = () => {
             console.error("Failed to load projects from localStorage", error);
             setProjects([]); // Fallback to empty array on error
         } finally {
-            setIsLoading(false);
+            // Simulate a short delay to show skeleton loaders
+            setTimeout(() => setIsLoading(false), 500);
         }
     }, []);
 
@@ -42,7 +43,8 @@ const App: React.FC = () => {
     useEffect(() => {
         try {
             localStorage.setItem('portfolio-projects', JSON.stringify(projects));
-        } catch (error) {
+        } catch (error)
+ {
             console.error("Failed to save projects to localStorage", error);
         }
     }, [projects]);
@@ -128,9 +130,10 @@ const App: React.FC = () => {
         };
     }, [isLoading]); // Rerun when content is loaded
 
-    if (isLoading) {
-        return <LoadingSpinner />;
-    }
+    // The top-level loading spinner can be removed if skeleton loaders are preferred
+    // if (isLoading) {
+    //     return <LoadingSpinner />;
+    // }
 
     if (currentPath === '/admin') {
         return <Admin 
@@ -168,6 +171,7 @@ const App: React.FC = () => {
                     info="My latest work."
                     gradient="from-black to-gray-900"
                     projects={projects}
+                    isLoading={isLoading}
                 />
                 <PromptsSection
                     ref={(el) => (sectionRefs.current[2] = el)}

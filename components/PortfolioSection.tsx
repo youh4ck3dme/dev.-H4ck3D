@@ -1,6 +1,7 @@
 import React, { forwardRef, useState, useEffect, useRef } from 'react';
 import { Project } from '../types';
 import ProjectCard from './ProjectCard';
+import ProjectCardSkeleton from './ProjectCardSkeleton';
 
 interface SectionProps {
   id: string;
@@ -8,9 +9,10 @@ interface SectionProps {
   info: string;
   gradient: string;
   projects: Project[];
+  isLoading: boolean;
 }
 
-const PortfolioSection = forwardRef<HTMLElement, SectionProps>(({ id, title, info, gradient, projects }, ref) => {
+const PortfolioSection = forwardRef<HTMLElement, SectionProps>(({ id, title, info, gradient, projects, isLoading }, ref) => {
   const [isVisible, setIsVisible] = useState(false);
   const targetRef = useRef<HTMLElement | null>(null);
 
@@ -52,7 +54,13 @@ const PortfolioSection = forwardRef<HTMLElement, SectionProps>(({ id, title, inf
       <div className="text-center max-w-6xl w-full mx-auto">
         <h1 className="text-4xl font-black text-white uppercase opacity-90 sm:text-6xl md:text-8xl lg:text-9xl tracking-tighter">{title}</h1>
         <div className="mt-12">
-            {projects.length > 0 ? (
+            {isLoading ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {Array.from({ length: 3 }).map((_, index) => (
+                  <ProjectCardSkeleton key={index} />
+                ))}
+              </div>
+            ) : projects.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     {projects.map(project => (
                         <ProjectCard key={project.id} project={project} />
