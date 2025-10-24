@@ -25,14 +25,16 @@ const isValidUrl = (urlString: string) => {
   }
 };
 
+const CATEGORIES = ['Web App', 'API', 'Mobile', 'Desktop', 'PWA'];
+
 const Dashboard: React.FC<DashboardProps> = ({ projects, onAddProject, onEditProject, onDeleteProject, onPinProject, onLogout, showToast, allTags }) => {
-  const [newProject, setNewProject] = useState({ title: '', description: '', imageUrl: '', projectUrl: '', tags: '' });
+  const [newProject, setNewProject] = useState({ title: '', description: '', imageUrl: '', projectUrl: '', tags: '', category: CATEGORIES[0] });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [deleteModalState, setDeleteModalState] = useState<{ isOpen: boolean; projectToDelete: Project | null }>({ isOpen: false, projectToDelete: null });
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setNewProject(prev => ({ ...prev, [name]: value }));
   };
@@ -58,7 +60,7 @@ const Dashboard: React.FC<DashboardProps> = ({ projects, onAddProject, onEditPro
     setIsSubmitting(true);
     const tagsArray = newProject.tags.split(',').map(tag => tag.trim()).filter(Boolean);
     onAddProject({ ...newProject, tags: tagsArray });
-    setNewProject({ title: '', description: '', imageUrl: '', projectUrl: '', tags: '' }); // Reset form
+    setNewProject({ title: '', description: '', imageUrl: '', projectUrl: '', tags: '', category: CATEGORIES[0] }); // Reset form
     setTimeout(() => setIsSubmitting(false), 500);
   };
   
@@ -135,9 +137,25 @@ const Dashboard: React.FC<DashboardProps> = ({ projects, onAddProject, onEditPro
               <label htmlFor="title" className="sr-only">Project Title</label>
               <input id="title" name="title" type="text" value={newProject.title} onChange={handleChange} placeholder="Project Title" className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
             </div>
+             <div>
+                <label htmlFor="category" className="sr-only">Category</label>
+                <select 
+                    id="category" 
+                    name="category" 
+                    value={newProject.category} 
+                    onChange={handleChange}
+                    className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+                    {CATEGORIES.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                </select>
+            </div>
             <div>
               <label htmlFor="projectUrl" className="sr-only">Project URL</label>
               <input id="projectUrl" name="projectUrl" type="url" value={newProject.projectUrl} onChange={handleChange} placeholder="Project URL" className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+            </div>
+            <div>
+               <label htmlFor="imageUrl" className="sr-only">Image URL</label>
+              <input id="imageUrl" name="imageUrl" type="url" value={newProject.imageUrl} onChange={handleChange} placeholder="Image URL" className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
             </div>
              <div className="md:col-span-2">
                <TagsInput
@@ -154,10 +172,6 @@ const Dashboard: React.FC<DashboardProps> = ({ projects, onAddProject, onEditPro
               <button type="button" onClick={handleGenerateDescription} disabled={isGenerating} className="absolute bottom-2 right-2 px-2 py-1 text-xs font-semibold text-black bg-white rounded hover:bg-gray-200 disabled:bg-gray-400 transition-colors">
                 {isGenerating ? '...' : 'Generate'}
               </button>
-            </div>
-            <div className="md:col-span-2">
-               <label htmlFor="imageUrl" className="sr-only">Image URL</label>
-              <input id="imageUrl" name="imageUrl" type="url" value={newProject.imageUrl} onChange={handleChange} placeholder="Image URL" className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
             </div>
             <button type="submit" disabled={isSubmitting} className="w-full p-2 font-semibold text-black bg-white rounded md:col-span-2 hover:bg-gray-200 disabled:bg-gray-400 transition-colors">
               {isSubmitting ? 'Adding...' : 'Add Project'}
@@ -179,7 +193,7 @@ const Dashboard: React.FC<DashboardProps> = ({ projects, onAddProject, onEditPro
                   </div>
                   <div className="absolute top-2 right-2 flex space-x-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
                       {index > 0 && (
-                        <button onClick={() => onPinProject(project.id)} className="p-1.5 bg-blue-600/80 text-white rounded-full hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400" aria-label={`Pin ${project.title}`}>
+                        <button onClick={() => onPinProject(project.id)} className="p-1.5 bg-blue-600/80 text-white rounded-full hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400" aria-label={`Pin ${project.title} to top`}>
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 3a1 1 0 011 1v5.586l2.293-2.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L9 9.586V4a1 1 0 011-1zM3 14a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" /></svg>
                         </button>
                       )}

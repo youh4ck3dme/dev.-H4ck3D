@@ -3,12 +3,37 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Personal portfolio of dev. H4CK3D, showcasing web development projects with a clean, modern, and interactive user interface." />
     <title>dev. H4CK3D | Portfolio</title>
+    <meta name="description" content="Personal portfolio of dev. H4CK3D, showcasing web development projects with a clean, modern, and interactive user interface." />
+    
+    <!-- PWA & Theme -->
+    <meta name="theme-color" content="#111827">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+
+    <!-- SEO & Open Graph -->
+    <link rel="canonical" href="https://youh4ck3d.me/" />
+    <meta property="og:title" content="dev. H4CK3D | Portfolio" />
+    <meta property="og:description" content="A portfolio showcasing web development projects with a modern, interactive, hacker-themed UI." />
+    <meta property="og:image" content="https://youh4ck3d.me/og-image.png" />
+    <meta property="og:url" content="https://youh4ck3d.me/" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="dev. H4CK3D | Portfolio" />
+    <meta name="twitter:description" content="A portfolio showcasing web development projects with a modern, interactive, hacker-themed UI." />
+    <meta name="twitter:image" content="https://youh4ck3d.me/og-image.png" />
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         html {
             scroll-behavior: smooth;
+        }
+        *:focus-visible {
+          outline: 2px solid #22d3ee;
+          outline-offset: 2px;
+          border-radius: 2px;
         }
         @keyframes slideIn {
             from {

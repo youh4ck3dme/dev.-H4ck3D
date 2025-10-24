@@ -5,4 +5,5 @@ export interface Project {
   imageUrl: string;
   projectUrl: string;
   tags: string[];
+  category: string;
 }

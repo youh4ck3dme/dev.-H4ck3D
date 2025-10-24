@@ -8,6 +8,7 @@ import Admin from './pages/Admin';
 import PortfolioSection from './components/PortfolioSection';
 import { Project } from './types';
 import Toast from './components/Toast';
+import PromptsSection from './components/PromptsSection';
 
 // A simple throttle function to limit how often the scroll handler runs for performance.
 const throttle = (func: (...args: any[]) => void, delay: number) => {
@@ -33,7 +34,7 @@ const COMMON_TAGS = [
 
 const staticSections = [
   { id: 'home', title: 'yu.h4ck3d.me', info: 'Execute a prompt. Query the AI mainframe.', gradient: 'from-gray-900 to-gray-800' },
-  { id: 'about', title: 'ABOUT', info: 'Company story, mission, vision, team information, and core values', gradient: 'from-gray-800 to-gray-900' },
+  { id: 'prompts', title: 'PROMPTS', info: 'A collection of powerful, production-ready AI prompts.', gradient: 'from-gray-800 to-gray-900' },
   { id: 'services', title: 'SERVICES', info: 'Service offerings, features, pricing plans, and detailed descriptions', gradient: 'from-gray-900 to-[#1f1f22]' },
   { id: 'portfolio', title: 'PORTFOLIO', info: 'Project showcase, case studies, client work, and achievements gallery', gradient: 'from-[#1f1f22] to-gray-800' },
   { id: 'contact', title: 'CONTACT', info: 'Contact form, office locations, phone numbers, and social media links', gradient: 'from-gray-800 to-gray-900' }
@@ -212,6 +213,20 @@ const App: React.FC = () => {
                 }}
               />
             )
+          }
+          if (section.id === 'prompts') {
+            return (
+              <PromptsSection
+                key={section.id}
+                id={section.id}
+                title={section.title}
+                gradient={section.gradient}
+                showToast={showToast}
+                ref={(el: HTMLElement | null) => {
+                  if (el) sectionRefs.current[section.id] = el;
+                }}
+              />
+            );
           }
           if (section.id === 'portfolio') {
             return (

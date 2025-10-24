@@ -117,7 +117,9 @@ const HomeSection = forwardRef<HTMLElement, SectionProps>(({ id, title, info, gr
             
             <form onSubmit={handleGenerate} className="mt-12 w-full max-w-2xl mx-auto">
               <div className="relative">
+                 <label htmlFor="ai-prompt-input" className="sr-only">Execute AI Prompt</label>
                  <input
+                  id="ai-prompt-input"
                   type="text"
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}

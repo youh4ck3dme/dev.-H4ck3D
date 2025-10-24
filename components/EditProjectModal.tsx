@@ -20,6 +20,8 @@ const isValidUrl = (urlString: string) => {
   }
 };
 
+const CATEGORIES = ['Web App', 'API', 'Mobile', 'Desktop', 'PWA'];
+
 const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onUpdate, onClose, showToast, allTags }) => {
   const [formData, setFormData] = useState({
     title: '',
@@ -27,6 +29,7 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onUpdate, 
     imageUrl: '',
     projectUrl: '',
     tags: '',
+    category: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -40,11 +43,12 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onUpdate, 
         imageUrl: project.imageUrl,
         projectUrl: project.projectUrl,
         tags: (project.tags || []).join(', '),
+        category: project.category || CATEGORIES[0],
       });
     }
   }, [project]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
@@ -74,6 +78,7 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onUpdate, 
         description: formData.description,
         imageUrl: formData.imageUrl,
         projectUrl: formData.projectUrl,
+        category: formData.category,
         tags: tagsArray
     });
     // The parent component will close the modal by setting editingProject to null
@@ -117,9 +122,23 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onUpdate, 
       >
         <h2 className="text-2xl font-bold text-white mb-4">Edit Project</h2>
         <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4">
-          <div>
-            <label htmlFor="edit-title" className="sr-only">Project Title</label>
-            <input id="edit-title" name="title" type="text" value={formData.title} onChange={handleChange} placeholder="Project Title" className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="edit-title" className="sr-only">Project Title</label>
+              <input id="edit-title" name="title" type="text" value={formData.title} onChange={handleChange} placeholder="Project Title" className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+            </div>
+            <div>
+              <label htmlFor="edit-category" className="sr-only">Category</label>
+              <select 
+                  id="edit-category" 
+                  name="category" 
+                  value={formData.category} 
+                  onChange={handleChange}
+                  className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                  {CATEGORIES.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+              </select>
+            </div>
           </div>
           <div>
             <label htmlFor="edit-projectUrl" className="sr-only">Project URL</label>

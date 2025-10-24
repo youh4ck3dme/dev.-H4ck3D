@@ -14,7 +14,7 @@ const Footer: React.FC = () => {
             <h3 className="text-lg font-bold text-white">Navigation</h3>
             <div className="mt-4 space-y-2">
               <a href="#home" onClick={(e) => handleScrollTo(e, '#home')} className="block text-sm text-gray-300 transition hover:text-white">Home</a>
-              <a href="#about" onClick={(e) => handleScrollTo(e, '#about')} className="block text-sm text-gray-300 transition hover:text-white">About</a>
+              <a href="#prompts" onClick={(e) => handleScrollTo(e, '#prompts')} className="block text-sm text-gray-300 transition hover:text-white">Prompts</a>
               <a href="#services" onClick={(e) => handleScrollTo(e, '#services')} className="block text-sm text-gray-300 transition hover:text-white">Services</a>
               <a href="#portfolio" onClick={(e) => handleScrollTo(e, '#portfolio')} className="block text-sm text-gray-300 transition hover:text-white">Portfolio</a>
               <a href="#contact" onClick={(e) => handleScrollTo(e, '#contact')} className="block text-sm text-gray-300 transition hover:text-white">Contact</a>

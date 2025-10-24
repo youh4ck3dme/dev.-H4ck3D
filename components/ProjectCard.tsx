@@ -56,6 +56,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         decoding="async"
       />
       <div className="p-6 flex flex-col flex-grow">
+        <p className="text-xs font-semibold text-indigo-300 uppercase tracking-wider mb-2">{project.category}</p>
         <h3 className="text-xl font-bold text-white">{project.title}</h3>
         <p className="mt-2 text-gray-300 text-sm flex-grow">{project.description}</p>
         <div className="mt-4 flex flex-wrap gap-2">
@@ -71,6 +72,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
           target="_blank" 
           rel="noopener noreferrer" 
           className="inline-block mt-4 pt-2 text-sm font-semibold text-indigo-400 transition-colors hover:text-indigo-300 self-start"
+          aria-label={`View project: ${project.title}`}
         >
           View Project &rarr;
         </a>
