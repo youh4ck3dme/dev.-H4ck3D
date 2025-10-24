@@ -185,7 +185,7 @@ const Dashboard: React.FC<DashboardProps> = ({ projects, onAddProject, onEditPro
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {projects.map((project, index) => (
                 <div key={project.id} className="relative flex flex-col bg-gray-800 border border-gray-700 rounded-lg overflow-hidden group">
-                  <img src={project.imageUrl} alt={project.title} className="w-full h-40 object-cover" loading="lazy" decoding="async" />
+                  <img src={project.imageUrl} alt={`Screenshot of ${project.title}`} className="w-full h-40 object-cover" loading="lazy" decoding="async" />
                   <div className="p-4 flex-grow flex flex-col">
                     <h3 className="text-lg font-bold">{project.title}</h3>
                     <p className="mt-2 text-sm text-gray-400 flex-grow">{project.description}</p>

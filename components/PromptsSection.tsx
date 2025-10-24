@@ -139,6 +139,7 @@ const PromptBlock: React.FC<PromptBlockProps> = ({ content, showToast }) => {
       </pre>
       <button
         onClick={handleCopy}
+        aria-label="Copy prompt to clipboard"
         className="absolute top-2 right-2 px-3 py-1 text-xs font-semibold text-black bg-white rounded-md hover:bg-gray-200 transition-colors"
       >
         {copied ? 'Copied!' : 'Copy'}
@@ -253,13 +254,17 @@ const PromptsSection = forwardRef<HTMLElement, PromptsSectionProps>(({ id, title
               <h2 className="text-2xl font-bold text-center text-white">Access Protected Content</h2>
               <p className="text-center text-gray-400 mt-2">Enter the password to view the AI prompts.</p>
               <form onSubmit={handleLogin} className="space-y-4 mt-6">
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Password"
-                  className="w-full px-4 py-2 text-white bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                />
+                <div>
+                  <label htmlFor="prompt-password-input" className="sr-only">Password</label>
+                  <input
+                    id="prompt-password-input"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Password"
+                    className="w-full px-4 py-2 text-white bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  />
+                </div>
                 {error && <p className="text-sm text-center text-red-400">{error}</p>}
                 <button
                   type="submit"
