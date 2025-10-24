@@ -244,7 +244,7 @@ const PromptsSection = forwardRef<HTMLElement, PromptsSectionProps>(({ id, title
         if (typeof ref === 'function') ref(el);
         else if (ref) ref.current = el;
       }}
-      className={`min-h-screen w-full flex items-center justify-center p-4 bg-gradient-to-br ${gradient} transition-opacity duration-1000 ease-out ${isVisible ? 'opacity-100' : 'opacity-0'}`}
+      className={`min-h-screen w-full flex items-center justify-center p-4 sm:p-8 lg:p-12 bg-gradient-to-br ${gradient} transition-opacity duration-1000 ease-out ${isVisible ? 'opacity-100' : 'opacity-0'}`}
     >
       <div className="text-center max-w-4xl w-full mx-auto">
         <h1 className="text-4xl font-black text-white uppercase opacity-90 sm:text-6xl md:text-8xl lg:text-9xl tracking-tighter">{title}</h1>

@@ -45,7 +45,7 @@ const PortfolioSection = forwardRef<HTMLElement, SectionProps>(({ id, title, inf
         if (typeof ref === 'function') ref(el);
         else if (ref) ref.current = el;
       }}
-      className={`min-h-screen w-full flex items-center justify-center p-4 bg-gradient-to-br ${gradient} transition-opacity duration-1000 ease-out ${
+      className={`min-h-screen w-full flex items-center justify-center p-4 sm:p-8 lg:p-12 bg-gradient-to-br ${gradient} transition-opacity duration-1000 ease-out ${
         isVisible ? 'opacity-100' : 'opacity-0'
       }`}
     >

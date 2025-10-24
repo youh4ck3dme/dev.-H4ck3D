@@ -101,7 +101,7 @@ const HomeSection = forwardRef<HTMLElement, SectionProps>(({ id, title, info, gr
         if (typeof ref === 'function') ref(el);
         else if (ref) ref.current = el;
       }}
-      className={`relative min-h-screen w-full flex items-center justify-center p-4 bg-gradient-to-br ${gradient} transition-opacity duration-1000 ease-out overflow-hidden ${
+      className={`relative min-h-screen w-full flex items-center justify-center p-4 sm:p-8 bg-gradient-to-br ${gradient} transition-opacity duration-1000 ease-out overflow-hidden ${
         isVisible ? 'opacity-100' : 'opacity-0'
       }`}
     >
@@ -113,7 +113,7 @@ const HomeSection = forwardRef<HTMLElement, SectionProps>(({ id, title, info, gr
                 {typedTitle}
                 <span className="text-cyan-400 caret">_</span>
             </h1>
-            <p className="max-w-xl mx-auto mt-4 text-base italic text-gray-300 md:text-lg">{info}</p>
+            <p className="max-w-xl mx-auto mt-4 text-base text-gray-300 md:text-lg">{info}</p>
             
             <form onSubmit={handleGenerate} className="mt-12 w-full max-w-2xl mx-auto">
               <div className="relative">

@@ -7,7 +7,7 @@ interface XCloudPageProps {
 
 const XCloudPage: React.FC<XCloudPageProps> = ({ navigate }) => {
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen bg-[#0a0a0a] text-white p-4">
+    <div className="relative flex flex-col items-center justify-center min-h-screen bg-[#0a0a0a] text-white p-4 sm:p-8">
       <ParticleBackground />
       <div className="relative z-10 text-center max-w-2xl">
         <h1 className="text-4xl font-black text-white uppercase opacity-90 sm:text-5xl md:text-7xl tracking-tighter glitch" data-text="xCloud">
