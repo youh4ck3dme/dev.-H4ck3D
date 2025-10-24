@@ -105,15 +105,14 @@ const HomeSection = forwardRef<HTMLElement, SectionProps>(({ id, title, info, gr
         isVisible ? 'opacity-100' : 'opacity-0'
       }`}
     >
-      <div className="scanline-overlay"></div>
+      <div className="hidden dark:block scanline-overlay"></div>
       <div className="relative z-10 text-center w-full max-w-4xl font-mono">
-        {/* Main Content */}
         <div className={`transition-opacity duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
-            <h1 className="relative text-4xl font-black text-white uppercase opacity-90 sm:text-5xl md:text-7xl tracking-tighter glitch" data-text={title}>
+            <h1 className="relative text-4xl font-black text-gray-900 dark:text-white uppercase opacity-90 sm:text-5xl md:text-7xl tracking-tighter glitch" data-text={title}>
                 {typedTitle}
-                <span className="text-cyan-400 caret">_</span>
+                <span className="text-cyan-500 dark:text-cyan-400 caret">_</span>
             </h1>
-            <p className="max-w-xl mx-auto mt-4 text-base text-gray-300 md:text-lg">{info}</p>
+            <p className="max-w-xl mx-auto mt-4 text-base text-gray-600 dark:text-gray-300 md:text-lg">{info}</p>
             
             <form onSubmit={handleGenerate} className="mt-12 w-full max-w-2xl mx-auto">
               <div className="relative">
@@ -124,7 +123,7 @@ const HomeSection = forwardRef<HTMLElement, SectionProps>(({ id, title, info, gr
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
                   placeholder="> Execute prompt..."
-                  className="w-full pl-4 pr-28 py-3 bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-cyan-500 focus:outline-none transition placeholder-gray-500"
+                  className="w-full pl-4 pr-28 py-3 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-cyan-500 focus:outline-none transition placeholder-gray-500"
                   disabled={isLoading}
                 />
                 <button
@@ -138,11 +137,11 @@ const HomeSection = forwardRef<HTMLElement, SectionProps>(({ id, title, info, gr
             </form>
 
             {(aiResponse || error) && (
-              <div className="mt-8 text-left p-4 bg-black/30 backdrop-blur-sm border border-gray-700 rounded-lg max-h-60 overflow-y-auto">
+              <div className="mt-8 text-left p-4 bg-gray-900/5 dark:bg-black/30 backdrop-blur-sm border border-gray-300 dark:border-gray-700 rounded-lg max-h-60 overflow-y-auto">
                 {error ? (
-                  <p className="text-red-400">{error}</p>
+                  <p className="text-red-500 dark:text-red-400">{error}</p>
                 ) : (
-                  <p className="text-green-300 whitespace-pre-wrap">{aiResponse}<span className="caret">_</span></p>
+                  <p className="text-green-600 dark:text-green-300 whitespace-pre-wrap">{aiResponse}<span className="caret">_</span></p>
                 )}
               </div>
             )}

@@ -4,6 +4,11 @@
   "description": "Personal portfolio of dev. H4CK3D, showcasing web development projects with a clean, modern, and interactive user interface.",
   "icons": [
     {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
       "src": "/icon-192.png",
       "type": "image/png",
       "sizes": "192x192"

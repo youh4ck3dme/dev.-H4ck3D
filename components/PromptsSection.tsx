@@ -134,13 +134,13 @@ const PromptBlock: React.FC<PromptBlockProps> = ({ content, showToast }) => {
 
   return (
     <div className="relative my-4">
-      <pre ref={textRef} className="bg-gray-900/70 border border-gray-700 rounded-lg p-4 text-sm text-gray-300 font-mono overflow-x-auto">
+      <pre ref={textRef} className="bg-gray-100 dark:bg-gray-900/70 border border-gray-200 dark:border-gray-700 rounded-lg p-4 text-sm text-gray-700 dark:text-gray-300 font-mono overflow-x-auto">
         <code>{content.trim()}</code>
       </pre>
       <button
         onClick={handleCopy}
         aria-label="Copy prompt to clipboard"
-        className="absolute top-2 right-2 px-3 py-1 text-xs font-semibold text-black bg-white rounded-md hover:bg-gray-200 transition-colors"
+        className="absolute top-2 right-2 px-3 py-1 text-xs font-semibold text-black bg-gray-200 dark:bg-white rounded-md hover:bg-gray-300 dark:hover:bg-gray-200 transition-colors"
       >
         {copied ? 'Copied!' : 'Copy'}
       </button>
@@ -154,26 +154,26 @@ const FormattedPrompts: React.FC<{ content: string, showToast: PromptsSectionPro
   const renderText = (text: string) => {
     return text.split('\n').map((line, index) => {
       // Bold text
-      line = line.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>');
+      line = line.replace(/\*\*(.*?)\*\*/g, '<strong class="text-gray-900 dark:text-white">$1</strong>');
       // Inline code
-      line = line.replace(/\`(.*?)\`/g, '<code class="bg-gray-700 text-cyan-300 px-1 py-0.5 rounded-sm text-sm">$1</code>');
+      line = line.replace(/\`(.*?)\`/g, '<code class="bg-gray-200 dark:bg-gray-700 text-cyan-600 dark:text-cyan-300 px-1 py-0.5 rounded-sm text-sm">$1</code>');
 
       if (line.startsWith('## ')) {
-        return <h2 key={index} className="text-3xl font-bold text-white mt-8 mb-4">{line.substring(3)}</h2>;
+        return <h2 key={index} className="text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-4">{line.substring(3)}</h2>;
       }
       if (line.startsWith('### ')) {
-        return <h3 key={index} className="text-xl font-semibold text-gray-200 mt-6 mb-3">{line.substring(4)}</h3>;
+        return <h3 key={index} className="text-xl font-semibold text-gray-800 dark:text-gray-200 mt-6 mb-3">{line.substring(4)}</h3>;
       }
        if (line.startsWith('# ')) {
-        return <h1 key={index} className="text-4xl font-extrabold text-white mt-4 mb-6 tracking-tight">{line.substring(2)}</h1>;
+        return <h1 key={index} className="text-4xl font-extrabold text-gray-900 dark:text-white mt-4 mb-6 tracking-tight">{line.substring(2)}</h1>;
       }
       if (line.startsWith('> ')) {
-        return <blockquote key={index} className="border-l-4 border-cyan-500 pl-4 my-4 text-gray-400 italic">{line.substring(2)}</blockquote>;
+        return <blockquote key={index} className="border-l-4 border-cyan-500 pl-4 my-4 text-gray-500 dark:text-gray-400 italic">{line.substring(2)}</blockquote>;
       }
       if (line.trim() === '---') {
-        return <hr key={index} className="my-10 border-gray-700" />;
+        return <hr key={index} className="my-10 border-gray-200 dark:border-gray-700" />;
       }
-      return <p key={index} className="my-2 text-gray-300" dangerouslySetInnerHTML={{ __html: line }} />;
+      return <p key={index} className="my-2 text-gray-600 dark:text-gray-300" dangerouslySetInnerHTML={{ __html: line }} />;
     });
   };
 
@@ -247,12 +247,12 @@ const PromptsSection = forwardRef<HTMLElement, PromptsSectionProps>(({ id, title
       className={`min-h-screen w-full flex items-center justify-center p-4 sm:p-8 lg:p-12 bg-gradient-to-br ${gradient} transition-opacity duration-1000 ease-out ${isVisible ? 'opacity-100' : 'opacity-0'}`}
     >
       <div className="text-center max-w-4xl w-full mx-auto">
-        <h1 className="text-4xl font-black text-white uppercase opacity-90 sm:text-6xl md:text-8xl lg:text-9xl tracking-tighter">{title}</h1>
+        <h1 className="text-4xl font-black text-gray-900 dark:text-white uppercase opacity-90 sm:text-6xl md:text-8xl lg:text-9xl tracking-tighter">{title}</h1>
         <div className="mt-12 text-left">
           {!isAuthenticated ? (
-            <div className="max-w-md mx-auto p-8 bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-lg">
-              <h2 className="text-2xl font-bold text-center text-white">Access Protected Content</h2>
-              <p className="text-center text-gray-400 mt-2">Enter the password to view the AI prompts.</p>
+            <div className="max-w-md mx-auto p-8 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-lg">
+              <h2 className="text-2xl font-bold text-center text-gray-900 dark:text-white">Access Protected Content</h2>
+              <p className="text-center text-gray-600 dark:text-gray-400 mt-2">Enter the password to view the AI prompts.</p>
               <form onSubmit={handleLogin} className="space-y-4 mt-6">
                 <div>
                   <label htmlFor="prompt-password-input" className="sr-only">Password</label>
@@ -262,20 +262,20 @@ const PromptsSection = forwardRef<HTMLElement, PromptsSectionProps>(({ id, title
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Password"
-                    className="w-full px-4 py-2 text-white bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                    className="w-full px-4 py-2 text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500"
                   />
                 </div>
-                {error && <p className="text-sm text-center text-red-400">{error}</p>}
+                {error && <p className="text-sm text-center text-red-500 dark:text-red-400">{error}</p>}
                 <button
                   type="submit"
-                  className="w-full px-4 py-2 font-semibold text-black transition-transform duration-200 bg-white rounded-md hover:bg-gray-200 active:scale-95"
+                  className="w-full px-4 py-2 font-semibold text-black transition-transform duration-200 bg-cyan-500 rounded-md hover:bg-cyan-400 active:scale-95"
                 >
                   Unlock
                 </button>
               </form>
             </div>
           ) : (
-             <div className="p-4 sm:p-6 bg-black/20 rounded-lg border border-gray-800 backdrop-blur-sm">
+             <div className="p-4 sm:p-6 bg-white/20 dark:bg-black/20 rounded-lg border border-gray-200 dark:border-gray-800 backdrop-blur-sm">
                 <FormattedPrompts content={promptsContent} showToast={showToast} />
              </div>
           )}

@@ -47,7 +47,7 @@ const TechIcon: React.FC<{ tag: string }> = ({ tag }) => {
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   return (
-    <div className="flex flex-col text-left bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-cyan-500/10">
+    <div className="flex flex-col text-left bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-cyan-500/10 dark:hover:shadow-cyan-500/10 hover:border-gray-300 dark:hover:border-gray-600">
       <img 
         src={project.imageUrl} 
         alt={`Screenshot of ${project.title}`} 
@@ -56,12 +56,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         decoding="async"
       />
       <div className="p-6 flex flex-col flex-grow">
-        <p className="text-xs font-semibold text-indigo-300 uppercase tracking-wider mb-2">{project.category}</p>
-        <h3 className="text-xl font-bold text-white">{project.title}</h3>
-        <p className="mt-2 text-gray-300 text-sm flex-grow">{project.description}</p>
+        <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-300 uppercase tracking-wider mb-2">{project.category}</p>
+        <h3 className="text-xl font-bold text-gray-900 dark:text-white">{project.title}</h3>
+        <p className="mt-2 text-gray-600 dark:text-gray-300 text-sm flex-grow">{project.description}</p>
         <div className="mt-4 flex flex-wrap gap-2">
           {(project.tags || []).map(tag => (
-            <div key={tag} className="flex items-center text-xs text-cyan-200 bg-cyan-900/60 px-2.5 py-1 rounded-full">
+            <div key={tag} className="flex items-center text-xs text-cyan-800 dark:text-cyan-200 bg-cyan-100 dark:bg-cyan-900/60 px-2.5 py-1 rounded-full">
               <TechIcon tag={tag} />
               <span>{tag}</span>
             </div>
@@ -71,7 +71,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
           href={project.projectUrl} 
           target="_blank" 
           rel="noopener noreferrer" 
-          className="inline-block mt-4 pt-2 text-sm font-semibold text-indigo-400 transition-colors hover:text-indigo-300 self-start"
+          className="inline-block mt-4 pt-2 text-sm font-semibold text-indigo-600 dark:text-indigo-400 transition-colors hover:text-indigo-500 dark:hover:text-indigo-300 self-start"
           aria-label={`View project: ${project.title}`}
         >
           View Project &rarr;

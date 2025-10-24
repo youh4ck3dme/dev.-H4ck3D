@@ -48,7 +48,8 @@ const TagsInput: React.FC<TagsInputProps> = ({ id, name, value, onChange, allTag
   };
 
   const handleSuggestionClick = (suggestion: string) => {
-    const tags = value.split(',').map(t => t.trim().filter(Boolean));
+// Fix: Removed `.filter(Boolean)` which was incorrectly called on a string returned by `t.trim()`.
+    const tags = value.split(',').map(t => t.trim());
     tags[tags.length - 1] = suggestion;
     const newValue = tags.join(', ') + ', ';
     
@@ -67,11 +68,11 @@ const TagsInput: React.FC<TagsInputProps> = ({ id, name, value, onChange, allTag
         onChange={handleInputChange}
         onFocus={() => setIsFocused(true)}
         placeholder={placeholder || "Tags (e.g., React, Firebase, AI)"}
-        className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        className="w-full p-2 text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         autoComplete="off"
       />
       {isFocused && suggestions.length > 0 && (
-        <ul className="absolute z-10 w-full mt-1 bg-gray-800 border border-gray-600 rounded-md shadow-lg max-h-40 overflow-y-auto">
+        <ul className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg max-h-40 overflow-y-auto">
           {suggestions.map(suggestion => (
             <li
               key={suggestion}
@@ -79,7 +80,7 @@ const TagsInput: React.FC<TagsInputProps> = ({ id, name, value, onChange, allTag
                 e.preventDefault();
                 handleSuggestionClick(suggestion);
               }}
-              className="px-3 py-2 text-sm text-white cursor-pointer hover:bg-gray-700"
+              className="px-3 py-2 text-sm text-gray-800 dark:text-white cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               {suggestion}
             </li>

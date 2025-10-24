@@ -115,12 +115,12 @@ const Dashboard: React.FC<DashboardProps> = ({ projects, onAddProject, onEditPro
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white p-4 sm:p-6 lg:p-8">
       <div className="max-w-6xl mx-auto">
         <header className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-4xl font-extrabold tracking-tight">Admin Dashboard</h1>
-            <p className="mt-1 text-gray-400">Manage your portfolio projects here.</p>
+            <p className="mt-1 text-gray-500 dark:text-gray-400">Manage your portfolio projects here.</p>
           </div>
           <button 
             onClick={onLogout}
@@ -130,12 +130,12 @@ const Dashboard: React.FC<DashboardProps> = ({ projects, onAddProject, onEditPro
           </button>
         </header>
 
-        <section className="p-6 mb-8 bg-gray-800 border border-gray-700 rounded-lg">
+        <section className="p-6 mb-8 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
           <h2 className="text-2xl font-bold mb-4">Add New Project</h2>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
               <label htmlFor="title" className="sr-only">Project Title</label>
-              <input id="title" name="title" type="text" value={newProject.title} onChange={handleChange} placeholder="Project Title" className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+              <input id="title" name="title" type="text" value={newProject.title} onChange={handleChange} placeholder="Project Title" className="w-full p-2 bg-gray-100 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
             </div>
              <div>
                 <label htmlFor="category" className="sr-only">Category</label>
@@ -144,18 +144,18 @@ const Dashboard: React.FC<DashboardProps> = ({ projects, onAddProject, onEditPro
                     name="category" 
                     value={newProject.category} 
                     onChange={handleChange}
-                    className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full p-2 bg-gray-100 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                     {CATEGORIES.map(cat => <option key={cat} value={cat}>{cat}</option>)}
                 </select>
             </div>
             <div>
               <label htmlFor="projectUrl" className="sr-only">Project URL</label>
-              <input id="projectUrl" name="projectUrl" type="url" value={newProject.projectUrl} onChange={handleChange} placeholder="Project URL" className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+              <input id="projectUrl" name="projectUrl" type="url" value={newProject.projectUrl} onChange={handleChange} placeholder="Project URL" className="w-full p-2 bg-gray-100 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
             </div>
             <div>
                <label htmlFor="imageUrl" className="sr-only">Image URL</label>
-              <input id="imageUrl" name="imageUrl" type="url" value={newProject.imageUrl} onChange={handleChange} placeholder="Image URL" className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+              <input id="imageUrl" name="imageUrl" type="url" value={newProject.imageUrl} onChange={handleChange} placeholder="Image URL" className="w-full p-2 bg-gray-100 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
             </div>
              <div className="md:col-span-2">
                <TagsInput
@@ -168,12 +168,12 @@ const Dashboard: React.FC<DashboardProps> = ({ projects, onAddProject, onEditPro
             </div>
             <div className="md:col-span-2 relative">
               <label htmlFor="description" className="sr-only">Description</label>
-              <textarea id="description" name="description" value={newProject.description} onChange={handleChange} placeholder="Description" className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" rows={3} required ></textarea>
-              <button type="button" onClick={handleGenerateDescription} disabled={isGenerating} className="absolute bottom-2 right-2 px-2 py-1 text-xs font-semibold text-black bg-white rounded hover:bg-gray-200 disabled:bg-gray-400 transition-colors">
+              <textarea id="description" name="description" value={newProject.description} onChange={handleChange} placeholder="Description" className="w-full p-2 bg-gray-100 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" rows={3} required ></textarea>
+              <button type="button" onClick={handleGenerateDescription} disabled={isGenerating} className="absolute bottom-2 right-2 px-2 py-1 text-xs font-semibold text-black bg-gray-200 dark:bg-white rounded hover:bg-gray-300 dark:hover:bg-gray-200 disabled:bg-gray-400 transition-colors">
                 {isGenerating ? '...' : 'Generate'}
               </button>
             </div>
-            <button type="submit" disabled={isSubmitting} className="w-full p-2 font-semibold text-black bg-white rounded md:col-span-2 hover:bg-gray-200 disabled:bg-gray-400 transition-colors">
+            <button type="submit" disabled={isSubmitting} className="w-full p-2 font-semibold text-black bg-cyan-500 rounded md:col-span-2 hover:bg-cyan-400 disabled:bg-gray-400 transition-colors">
               {isSubmitting ? 'Adding...' : 'Add Project'}
             </button>
           </form>
@@ -184,12 +184,12 @@ const Dashboard: React.FC<DashboardProps> = ({ projects, onAddProject, onEditPro
           {projects.length > 0 ? (
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {projects.map((project, index) => (
-                <div key={project.id} className="relative flex flex-col bg-gray-800 border border-gray-700 rounded-lg overflow-hidden group">
+                <div key={project.id} className="relative flex flex-col bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden group">
                   <img src={project.imageUrl} alt={`Screenshot of ${project.title}`} className="w-full h-40 object-cover" loading="lazy" decoding="async" />
                   <div className="p-4 flex-grow flex flex-col">
                     <h3 className="text-lg font-bold">{project.title}</h3>
-                    <p className="mt-2 text-sm text-gray-400 flex-grow">{project.description}</p>
-                     <a href={project.projectUrl} target="_blank" rel="noopener noreferrer" className="mt-3 text-sm text-indigo-400 hover:underline">View Project</a>
+                    <p className="mt-2 text-sm text-gray-600 dark:text-gray-400 flex-grow">{project.description}</p>
+                     <a href={project.projectUrl} target="_blank" rel="noopener noreferrer" className="mt-3 text-sm text-indigo-500 dark:text-indigo-400 hover:underline">View Project</a>
                   </div>
                   <div className="absolute top-2 right-2 flex space-x-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
                       {index > 0 && (
@@ -210,9 +210,9 @@ const Dashboard: React.FC<DashboardProps> = ({ projects, onAddProject, onEditPro
               ))}
             </div>
             ) : (
-            <div className="text-center py-12 px-4 border-2 border-dashed border-gray-700 rounded-lg md:col-span-3">
-                <h3 className="text-lg font-medium text-white">No projects yet</h3>
-                <p className="mt-1 text-sm text-gray-400">Use the form above to add your first project to the portfolio.</p>
+            <div className="text-center py-12 px-4 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg md:col-span-3">
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white">No projects yet</h3>
+                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">Use the form above to add your first project to the portfolio.</p>
             </div>
           )}
         </section>

@@ -117,15 +117,15 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onUpdate, 
       role="dialog"
     >
       <div 
-        className="relative w-full max-w-2xl p-6 m-4 bg-gray-800 border border-gray-700 rounded-lg shadow-xl animate-scaleIn"
+        className="relative w-full max-w-2xl p-6 m-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl animate-scaleIn"
         onClick={e => e.stopPropagation()}
       >
-        <h2 className="text-2xl font-bold text-white mb-4">Edit Project</h2>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Edit Project</h2>
         <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label htmlFor="edit-title" className="sr-only">Project Title</label>
-              <input id="edit-title" name="title" type="text" value={formData.title} onChange={handleChange} placeholder="Project Title" className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+              <input id="edit-title" name="title" type="text" value={formData.title} onChange={handleChange} placeholder="Project Title" className="w-full p-2 text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
             </div>
             <div>
               <label htmlFor="edit-category" className="sr-only">Category</label>
@@ -134,7 +134,7 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onUpdate, 
                   name="category" 
                   value={formData.category} 
                   onChange={handleChange}
-                  className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full p-2 text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                   {CATEGORIES.map(cat => <option key={cat} value={cat}>{cat}</option>)}
               </select>
@@ -142,7 +142,7 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onUpdate, 
           </div>
           <div>
             <label htmlFor="edit-projectUrl" className="sr-only">Project URL</label>
-            <input id="edit-projectUrl" name="projectUrl" type="url" value={formData.projectUrl} onChange={handleChange} placeholder="Project URL" className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+            <input id="edit-projectUrl" name="projectUrl" type="url" value={formData.projectUrl} onChange={handleChange} placeholder="Project URL" className="w-full p-2 text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
           </div>
           <div>
             <TagsInput
@@ -156,27 +156,27 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onUpdate, 
           </div>
           <div className="relative">
             <label htmlFor="edit-description" className="sr-only">Description</label>
-            <textarea id="edit-description" name="description" value={formData.description} onChange={handleChange} placeholder="Description" className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" rows={4} required></textarea>
-            <button type="button" onClick={handleGenerateDescription} disabled={isGenerating} className="absolute bottom-2 right-2 px-2 py-1 text-xs font-semibold text-black bg-white rounded hover:bg-gray-200 disabled:bg-gray-400 transition-colors">
+            <textarea id="edit-description" name="description" value={formData.description} onChange={handleChange} placeholder="Description" className="w-full p-2 text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" rows={4} required></textarea>
+            <button type="button" onClick={handleGenerateDescription} disabled={isGenerating} className="absolute bottom-2 right-2 px-2 py-1 text-xs font-semibold text-black bg-gray-200 dark:bg-white rounded hover:bg-gray-300 dark:hover:bg-gray-200 disabled:bg-gray-400 transition-colors">
               {isGenerating ? '...' : 'Generate'}
             </button>
           </div>
           <div>
             <label htmlFor="edit-imageUrl" className="sr-only">Image URL</label>
-            <input id="edit-imageUrl" name="imageUrl" type="url" value={formData.imageUrl} onChange={handleChange} placeholder="Image URL" className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+            <input id="edit-imageUrl" name="imageUrl" type="url" value={formData.imageUrl} onChange={handleChange} placeholder="Image URL" className="w-full p-2 text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
           </div>
           <div className="flex justify-end mt-4 space-x-4">
             <button 
               type="button"
               onClick={onClose}
-              className="px-4 py-2 font-semibold text-white transition-colors bg-gray-600 rounded-md hover:bg-gray-500"
+              className="px-4 py-2 font-semibold text-gray-800 dark:text-white bg-gray-200 dark:bg-gray-600 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500"
             >
               Cancel
             </button>
             <button 
               type="submit"
               disabled={isSubmitting}
-              className="px-4 py-2 font-semibold text-black bg-white rounded-md hover:bg-gray-200 disabled:bg-gray-400"
+              className="px-4 py-2 font-semibold text-black bg-cyan-500 rounded-md hover:bg-cyan-400 disabled:bg-gray-400"
             >
               {isSubmitting ? 'Updating...' : 'Update Project'}
             </button>

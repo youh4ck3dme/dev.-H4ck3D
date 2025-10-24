@@ -21,7 +21,6 @@ const Admin: React.FC<AdminProps> = (props) => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    // Check session storage to see if user is already authenticated
     try {
       const sessionAuth = sessionStorage.getItem('isAdminAuthenticated');
       if (sessionAuth === 'true') {
@@ -56,14 +55,13 @@ const Admin: React.FC<AdminProps> = (props) => {
       console.error("Could not remove item from session storage.", e);
     }
     setIsAuthenticated(false);
-    // Redirect to home page using client-side navigation
     props.navigate('/');
   };
   
   if (!isAuthenticated) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
-        <div className="w-full max-w-sm p-8 space-y-6 bg-gray-800 border border-gray-700 rounded-lg shadow-xl">
+      <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
+        <div className="w-full max-w-sm p-8 space-y-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl">
           <h1 className="text-3xl font-bold text-center">Admin Access</h1>
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
@@ -74,14 +72,14 @@ const Admin: React.FC<AdminProps> = (props) => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter Password"
-                className="w-full px-4 py-2 text-white bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-4 py-2 text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 autoComplete="current-password"
               />
             </div>
-            {error && <p className="text-sm text-center text-red-400">{error}</p>}
+            {error && <p className="text-sm text-center text-red-500 dark:text-red-400">{error}</p>}
             <button
               type="submit"
-              className="w-full px-4 py-2 font-semibold text-black transition-transform duration-200 bg-white rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white active:scale-95"
+              className="w-full px-4 py-2 font-semibold text-black transition-transform duration-200 bg-cyan-500 rounded-md hover:bg-cyan-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white active:scale-95"
             >
               Login
             </button>

@@ -52,7 +52,7 @@ const PortfolioSection = forwardRef<HTMLElement, SectionProps>(({ id, title, inf
       }`}
     >
       <div className="text-center max-w-6xl w-full mx-auto">
-        <h1 className="text-4xl font-black text-white uppercase opacity-90 sm:text-6xl md:text-8xl lg:text-9xl tracking-tighter">{title}</h1>
+        <h1 className="text-4xl font-black text-gray-900 dark:text-white uppercase opacity-90 sm:text-6xl md:text-8xl lg:text-9xl tracking-tighter">{title}</h1>
         <div className="mt-12">
             {isLoading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -67,7 +67,7 @@ const PortfolioSection = forwardRef<HTMLElement, SectionProps>(({ id, title, inf
                     ))}
                 </div>
             ) : (
-                <p className="max-w-xl mx-auto mt-4 text-base italic text-gray-300 md:text-lg">My work will be displayed here. Go to the admin panel to add your first project!</p>
+                <p className="max-w-xl mx-auto mt-4 text-base italic text-gray-600 dark:text-gray-300 md:text-lg">My work will be displayed here. Go to the admin panel to add your first project!</p>
             )}
         </div>
       </div>

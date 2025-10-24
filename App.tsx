@@ -8,7 +8,6 @@ import Footer from './components/Footer';
 import Admin from './pages/Admin';
 import XCloudPage from './pages/XCloudPage';
 import Toast from './components/Toast';
-import LoadingSpinner from './components/LoadingSpinner';
 import ParticleBackground from './components/ParticleBackground';
 import InstallPwaBanner from './components/InstallPwaBanner';
 
@@ -19,6 +18,34 @@ const App: React.FC = () => {
     const [currentPath, setCurrentPath] = useState(window.location.pathname);
     const [activeSection, setActiveSection] = useState('home');
     const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+    const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+        if (typeof window !== 'undefined' && localStorage.getItem('theme')) {
+            return localStorage.getItem('theme') as 'light' | 'dark';
+        }
+        if (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            return 'dark';
+        }
+        return 'dark'; // Default to dark theme
+    });
+
+    // Theme toggling and persistence
+    const toggleTheme = () => {
+        setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
+    };
+
+    useEffect(() => {
+        const root = window.document.documentElement;
+        if (theme === 'dark') {
+            root.classList.add('dark');
+        } else {
+            root.classList.remove('dark');
+        }
+        try {
+            localStorage.setItem('theme', theme);
+        } catch (error) {
+            console.error("Failed to save theme to localStorage", error);
+        }
+    }, [theme]);
 
     // Load projects from localStorage on initial render
     useEffect(() => {
@@ -27,14 +54,12 @@ const App: React.FC = () => {
             if (storedProjects) {
                 setProjects(JSON.parse(storedProjects));
             } else {
-                // Initialize with empty array if nothing is stored
                 setProjects([]);
             }
         } catch (error) {
             console.error("Failed to load projects from localStorage", error);
-            setProjects([]); // Fallback to empty array on error
+            setProjects([]);
         } finally {
-            // Simulate a short delay to show skeleton loaders
             setTimeout(() => setIsLoading(false), 500);
         }
     }, []);
@@ -43,8 +68,7 @@ const App: React.FC = () => {
     useEffect(() => {
         try {
             localStorage.setItem('portfolio-projects', JSON.stringify(projects));
-        } catch (error)
- {
+        } catch (error) {
             console.error("Failed to save projects to localStorage", error);
         }
     }, [projects]);
@@ -115,7 +139,7 @@ const App: React.FC = () => {
                     }
                 });
             },
-            { rootMargin: '-50% 0px -50% 0px' } // Trigger when section is in the middle of the viewport
+            { rootMargin: '-50% 0px -50% 0px' }
         );
 
         sectionRefs.current.forEach((ref) => {
@@ -128,12 +152,7 @@ const App: React.FC = () => {
                 if (ref) observer.unobserve(ref);
             });
         };
-    }, [isLoading]); // Rerun when content is loaded
-
-    // The top-level loading spinner can be removed if skeleton loaders are preferred
-    // if (isLoading) {
-    //     return <LoadingSpinner />;
-    // }
+    }, [isLoading]);
 
     if (currentPath === '/admin') {
         return <Admin 
@@ -153,31 +172,34 @@ const App: React.FC = () => {
     }
 
     return (
-        <div className="bg-[#0a0a0a] text-white">
-            <ParticleBackground />
-            <Header sections={sections} activeSection={activeSection} onNavigate={navigate} />
+        <div className="bg-gray-50 dark:bg-[#0a0a0a] text-gray-900 dark:text-white transition-colors duration-300">
+            {theme === 'dark' && <ParticleBackground />}
+            <Header sections={sections} activeSection={activeSection} onNavigate={navigate} theme={theme} toggleTheme={toggleTheme} />
             <main className="relative z-10">
                 <HomeSection
-                    ref={(el) => (sectionRefs.current[0] = el)}
+// Fix: Use a block body for the ref callback to ensure it returns void.
+                    ref={(el) => { sectionRefs.current[0] = el; }}
                     id="home"
                     title="H4CK3D"
                     info="A portfolio showcasing web development projects with a modern, interactive, hacker-themed UI."
-                    gradient="from-gray-900 to-black"
+                    gradient="from-gray-100 to-gray-300 dark:from-gray-900 dark:to-black"
                 />
                 <PortfolioSection
-                    ref={(el) => (sectionRefs.current[1] = el)}
+// Fix: Use a block body for the ref callback to ensure it returns void.
+                    ref={(el) => { sectionRefs.current[1] = el; }}
                     id="portfolio"
                     title="Portfolio"
                     info="My latest work."
-                    gradient="from-black to-gray-900"
+                    gradient="from-gray-300 to-white dark:from-black dark:to-gray-900"
                     projects={projects}
                     isLoading={isLoading}
                 />
                 <PromptsSection
-                    ref={(el) => (sectionRefs.current[2] = el)}
+// Fix: Use a block body for the ref callback to ensure it returns void.
+                    ref={(el) => { sectionRefs.current[2] = el; }}
                     id="prompts"
                     title="AI Prompts"
-                    gradient="from-gray-900 to-black"
+                    gradient="from-white to-gray-200 dark:from-gray-900 dark:to-black"
                     showToast={showToast}
                 />
             </main>
