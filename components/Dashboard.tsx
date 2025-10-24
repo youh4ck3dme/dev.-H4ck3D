@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Project } from '../types';
+import ConfirmationModal from './ConfirmationModal';
 
 interface DashboardProps {
   projects: Project[];
@@ -9,9 +10,19 @@ interface DashboardProps {
   showToast: (message: string, type: 'success' | 'error') => void;
 }
 
+const isValidUrl = (urlString: string) => {
+  try {
+    new URL(urlString);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
 const Dashboard: React.FC<DashboardProps> = ({ projects, onAddProject, onDeleteProject, onLogout, showToast }) => {
   const [newProject, setNewProject] = useState({ title: '', description: '', imageUrl: '', projectUrl: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [modalState, setModalState] = useState<{ isOpen: boolean; projectToDelete: Project | null }>({ isOpen: false, projectToDelete: null });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -24,10 +35,33 @@ const Dashboard: React.FC<DashboardProps> = ({ projects, onAddProject, onDeleteP
       showToast("Please fill in all fields.", 'error');
       return;
     }
+    if (!isValidUrl(newProject.imageUrl)) {
+      showToast("Please enter a valid Image URL.", 'error');
+      return;
+    }
+    if (!isValidUrl(newProject.projectUrl)) {
+      showToast("Please enter a valid Project URL.", 'error');
+      return;
+    }
     setIsSubmitting(true);
     onAddProject(newProject);
     setNewProject({ title: '', description: '', imageUrl: '', projectUrl: '' }); // Reset form
     setTimeout(() => setIsSubmitting(false), 500);
+  };
+
+  const handleDeleteClick = (project: Project) => {
+    setModalState({ isOpen: true, projectToDelete: project });
+  };
+
+  const handleConfirmDelete = () => {
+    if (modalState.projectToDelete) {
+      onDeleteProject(modalState.projectToDelete.id);
+      setModalState({ isOpen: false, projectToDelete: null });
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setModalState({ isOpen: false, projectToDelete: null });
   };
 
   return (
@@ -51,11 +85,11 @@ const Dashboard: React.FC<DashboardProps> = ({ projects, onAddProject, onDeleteP
           <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
               <label htmlFor="title" className="sr-only">Project Title</label>
-              <input id="title" name="title" value={newProject.title} onChange={handleChange} placeholder="Project Title" className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+              <input id="title" name="title" type="text" value={newProject.title} onChange={handleChange} placeholder="Project Title" className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
             </div>
             <div>
               <label htmlFor="projectUrl" className="sr-only">Project URL</label>
-              <input id="projectUrl" name="projectUrl" value={newProject.projectUrl} onChange={handleChange} placeholder="Project URL" className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+              <input id="projectUrl" name="projectUrl" type="url" value={newProject.projectUrl} onChange={handleChange} placeholder="Project URL" className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
             </div>
             <div className="md:col-span-2">
               <label htmlFor="description" className="sr-only">Description</label>
@@ -63,7 +97,7 @@ const Dashboard: React.FC<DashboardProps> = ({ projects, onAddProject, onDeleteP
             </div>
             <div className="md:col-span-2">
                <label htmlFor="imageUrl" className="sr-only">Image URL</label>
-              <input id="imageUrl" name="imageUrl" value={newProject.imageUrl} onChange={handleChange} placeholder="Image URL" className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+              <input id="imageUrl" name="imageUrl" type="url" value={newProject.imageUrl} onChange={handleChange} placeholder="Image URL" className="w-full p-2 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
             </div>
             <button type="submit" disabled={isSubmitting} className="w-full p-2 font-semibold text-black bg-white rounded md:col-span-2 hover:bg-gray-200 disabled:bg-gray-400 transition-colors">
               {isSubmitting ? 'Adding...' : 'Add Project'}
@@ -73,25 +107,39 @@ const Dashboard: React.FC<DashboardProps> = ({ projects, onAddProject, onDeleteP
 
         <section>
           <h2 className="text-2xl font-bold mb-4">Existing Projects ({projects.length})</h2>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {projects.length > 0 ? projects.map(project => (
-              <div key={project.id} className="relative flex flex-col bg-gray-800 border border-gray-700 rounded-lg overflow-hidden group">
-                <img src={project.imageUrl} alt={project.title} className="w-full h-40 object-cover" loading="lazy" decoding="async" />
-                <div className="p-4 flex-grow flex flex-col">
-                  <h3 className="text-lg font-bold">{project.title}</h3>
-                  <p className="mt-2 text-sm text-gray-400 flex-grow">{project.description}</p>
-                   <a href={project.projectUrl} target="_blank" rel="noopener noreferrer" className="mt-3 text-sm text-indigo-400 hover:underline">View Project</a>
+          {projects.length > 0 ? (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {projects.map(project => (
+                <div key={project.id} className="relative flex flex-col bg-gray-800 border border-gray-700 rounded-lg overflow-hidden group">
+                  <img src={project.imageUrl} alt={project.title} className="w-full h-40 object-cover" loading="lazy" decoding="async" />
+                  <div className="p-4 flex-grow flex flex-col">
+                    <h3 className="text-lg font-bold">{project.title}</h3>
+                    <p className="mt-2 text-sm text-gray-400 flex-grow">{project.description}</p>
+                     <a href={project.projectUrl} target="_blank" rel="noopener noreferrer" className="mt-3 text-sm text-indigo-400 hover:underline">View Project</a>
+                  </div>
+                  <button onClick={() => handleDeleteClick(project)} className="absolute top-2 right-2 p-1.5 bg-red-600/80 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-400" aria-label={`Delete ${project.title}`}>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clipRule="evenodd" />
+                    </svg>
+                  </button>
                 </div>
-                <button onClick={() => onDeleteProject(project.id)} className="absolute top-2 right-2 p-1.5 bg-red-600/80 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clipRule="evenodd" />
-                  </svg>
-                </button>
-              </div>
-            )) : <p className="text-gray-500 md:col-span-3">No projects added yet. Use the form above to add your first project.</p>}
-          </div>
+              ))}
+            </div>
+            ) : (
+            <div className="text-center py-12 px-4 border-2 border-dashed border-gray-700 rounded-lg md:col-span-3">
+                <h3 className="text-lg font-medium text-white">No projects yet</h3>
+                <p className="mt-1 text-sm text-gray-400">Use the form above to add your first project to the portfolio.</p>
+            </div>
+          )}
         </section>
       </div>
+      <ConfirmationModal 
+        isOpen={modalState.isOpen}
+        onClose={handleCancelDelete}
+        onConfirm={handleConfirmDelete}
+        title="Confirm Deletion"
+        message={`Are you sure you want to delete the project "${modalState.projectToDelete?.title}"? This action cannot be undone.`}
+      />
     </div>
   );
 };

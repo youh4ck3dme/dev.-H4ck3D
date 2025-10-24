@@ -19,18 +19,27 @@ const Admin: React.FC<AdminProps> = (props) => {
 
   useEffect(() => {
     // Check session storage to see if user is already authenticated
-    const sessionAuth = sessionStorage.getItem('isAdminAuthenticated');
-    if (sessionAuth === 'true') {
-      setIsAuthenticated(true);
+    try {
+      const sessionAuth = sessionStorage.getItem('isAdminAuthenticated');
+      if (sessionAuth === 'true') {
+        setIsAuthenticated(true);
+      }
+    } catch (e) {
+      console.error("Could not access session storage. Admin features may be limited.", e);
     }
   }, []);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (password === ADMIN_PASSWORD) {
-      setIsAuthenticated(true);
-      sessionStorage.setItem('isAdminAuthenticated', 'true');
-      setError('');
+      try {
+        sessionStorage.setItem('isAdminAuthenticated', 'true');
+        setIsAuthenticated(true);
+        setError('');
+      } catch (e) {
+        console.error("Could not write to session storage.", e);
+        setError("Could not save session. Please check your browser settings.");
+      }
     } else {
       setError('Incorrect password. Please try again.');
     }
@@ -38,7 +47,11 @@ const Admin: React.FC<AdminProps> = (props) => {
   };
 
   const handleLogout = () => {
-    sessionStorage.removeItem('isAdminAuthenticated');
+    try {
+      sessionStorage.removeItem('isAdminAuthenticated');
+    } catch (e) {
+      console.error("Could not remove item from session storage.", e);
+    }
     setIsAuthenticated(false);
     // Redirect to home page using client-side navigation
     props.navigate('/');

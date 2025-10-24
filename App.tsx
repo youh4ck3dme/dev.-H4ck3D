@@ -52,7 +52,7 @@ const App: React.FC = () => {
         setProjects(JSON.parse(storedProjects));
       }
     } catch (error) {
-      console.error("Failed to parse projects from localStorage", error);
+      console.error("Failed to read or parse projects from localStorage", error);
     }
 
     // Simulate initial loading to show the spinner and prevent content flash
@@ -76,22 +76,28 @@ const App: React.FC = () => {
   };
 
   const handleAddProject = (project: Omit<Project, 'id'>) => {
-    setProjects(prevProjects => {
-      const newProject = { ...project, id: Date.now().toString() };
-      const updatedProjects = [...prevProjects, newProject];
+    const newProject = { ...project, id: Date.now().toString() };
+    const updatedProjects = [...projects, newProject];
+    try {
       localStorage.setItem('portfolioProjects', JSON.stringify(updatedProjects));
-      return updatedProjects;
-    });
-    showToast('Project added successfully!', 'success');
+      setProjects(updatedProjects);
+      showToast('Project added successfully!', 'success');
+    } catch (error) {
+      console.error("Failed to save projects to localStorage", error);
+      showToast('Failed to save project. Your browser storage might be full or disabled.', 'error');
+    }
   };
 
   const handleDeleteProject = (id: string) => {
-    setProjects(prevProjects => {
-      const updatedProjects = prevProjects.filter(p => p.id !== id);
+    const updatedProjects = projects.filter(p => p.id !== id);
+    try {
       localStorage.setItem('portfolioProjects', JSON.stringify(updatedProjects));
-      return updatedProjects;
-    });
-    showToast('Project deleted successfully!', 'success');
+      setProjects(updatedProjects);
+      showToast('Project deleted successfully!', 'success');
+    } catch (error) {
+      console.error("Failed to update projects in localStorage", error);
+      showToast('Failed to delete project. Your browser storage might be full or disabled.', 'error');
+    }
   };
 
   const handleScroll = useCallback(() => {
